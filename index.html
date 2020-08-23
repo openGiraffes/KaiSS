@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>KaiSS - KaiOS上的ShadowSocks客户端</title>
+        <meta charset="utf-8"> 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+        <script src="jquery.js"></script>
+        <script src="bootstrap.js"></script>
+        <script src="libwallace.js"></script>
+        <script src="app.js"></script>
+        <link rel="stylesheet" type="text/css" href="bootstrap.css" />
+    </head>
+    <body>
+        <div class="container">
+            <p class="alert alert-info">KaiSS - KaiOS上的ShadowSocks客户端</p>
+            <p class="alert alert-warning">首次运行请务必先安装服务！安装服务前请先确认设备已root；安装时不会检查是否root，请自行确认。</p>
+            <div>
+                <!--
+                <label>服务器地址：</label>
+                <input type="text" id="host" class="form-control" tabindex="1" />
+                <label>服务器端口：</label>
+                <input type="text" id="port" class="form-control" tabindex="2" />
+                <label>服务器密码：</label>
+                <input type="text" id="pwd" class="form-control" tabindex="3" />
+                <label>加密方式：</label>
+                <select id="method" class="form-control" tabindex="4">
+                    <option value="rc4-md5">rc4-md5</option>
+                    <option value="aes-128-gcm">aes-128-gcm</option>
+                    <option value="aes-192-gcm">aes-192-gcm</option>
+                    <option value="aes-256-gcm">aes-256-gcm</option>
+                    <option value="aes-128-cfb">aes-128-cfb</option>
+                    <option value="aes-192-cfb">aes-192-cfb</option>
+                    <option value="aes-256-cfb">aes-256-cfb</option>
+                    <option value="aes-128-ctr">aes-128-ctr</option>
+                    <option value="aes-192-ctr">aes-192-ctr</option>
+                    <option value="aes-256-ctr">aes-256-ctr</option>
+                    <option value="camellia-128-cfb">camellia-128-cfb</option>
+                    <option value="camellia-192-cfb">camellia-192-cfb</option>
+                    <option value="camellia-256-cfb">camellia-256-cfb</option>
+                    <option value="bf-cfb">bf-cfb</option>
+                    <option value="chacha20-ietf-poly1305">chacha20-ietf-poly1305</option>
+                    <option value="xchacha20-ietf-poly1305">xchacha20-ietf-poly1305</option>
+                    <option value="salsa20">salsa20</option>
+                    <option value="chacha20">chacha20</option>
+                    <option value="chacha20-ietf">chacha20-ietf</option>
+                </select>
+                -->
+                <button id="install" class="btn btn-success" tabindex="5">安装服务</button>
+                <button id="start" class="btn btn-success" tabindex="5">启动</button>
+                <button id="stop" class="btn btn-danger">停止</button>
+            </div>
+        </div>
+    </body>
+</html>
