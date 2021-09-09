@@ -37,6 +37,5 @@
       "description": "Support package installation"
     }
   },
-  "theme_color": "#006400",
-  "cursor": true
+  "theme_color": "#006400"
 }

@@ -56,7 +56,7 @@
  * For more information, please refer to <http://unlicense.org/>
  **/
 
-;(function(global, nav) {
+; (function (global, nav) {
   var masterExt = nav.engmodeExtension || nav.jrdExtension || nav.kaiosExtension
 
   /**
@@ -66,8 +66,8 @@
    * @param {function} errorCb The callback that gets called on error
    */
   function runCmd(cmd, successCb, errorCb) {
-    if(!successCb) successCb = function(){}
-    if(!errorCb) errorCb = function(){}
+    if (!successCb) successCb = function () { }
+    if (!errorCb) errorCb = function () { }
     var executor = masterExt.startUniversalCommand(cmd, true)
     executor.onsuccess = successCb
     executor.onerror = errorCb
@@ -83,7 +83,7 @@
    */
   function extractAppAsset(appId, sourcePath, destPath, successCb, errorCb) {
     var zipPath = '/data/local/webapps/' + appId + '/application.zip',
-        unzipCmd = 'busybox unzip -p ' + zipPath + ' ' + sourcePath + ' > ' + destPath
+      unzipCmd = 'busybox unzip -p ' + zipPath + ' ' + sourcePath + ' > ' + destPath
     runCmd(unzipCmd, successCb, errorCb)
   }
 
@@ -139,12 +139,12 @@
    */
   function getSystemSetting(key, successCb, errorCb) {
     var e = nav.mozSettings.createLock().get(key)
-    e.onsuccess = function() {
+    e.onsuccess = function () {
       successCb(e.result[key])
     }
     e.onerror = errorCb
   }
-  
+
   /**
    * Set a property in the system settings database
    * @param {string} key The name of the property to set
@@ -168,11 +168,11 @@
    * @param {function} errorCb The callback that gets called on error
    */
   function toggleDiagPort(successOnCb, successOffCb, errorCb) {
-    var status = getSystemProperty('sys.usb.config'), 
-        sysProp = 'persist.sys.usb.config',
-        inactiveState = 'mtp,adb',
-        activeState = 'diag,serial_smd,rmnet_qti_bam,adb'
-    if(status === activeState) { //diag enabled, disabling
+    var status = getSystemProperty('sys.usb.config'),
+      sysProp = 'persist.sys.usb.config',
+      inactiveState = 'mtp,adb',
+      activeState = 'diag,serial_smd,rmnet_qti_bam,adb'
+    if (status === activeState) { //diag enabled, disabling
       setSystemProperty(sysProp, inactiveState)
       successOffCb()
     }
@@ -211,10 +211,10 @@
    */
   function setSystemProxyConfig(config) {
     var allowedPrefs = ['type', 'http', 'http_port', 'ftp', 'ftp_port', 'ssl', 'ssl_port', 'socks',
-        'socks_port', 'socks_remote_dns', 'socks_version', 'no_proxies_on', 'autoconfig_url', 'failover_timeout'],
-        pref
-    for(pref in config) {
-      if(allowedPrefs.indexOf(pref) > -1)
+      'socks_port', 'socks_remote_dns', 'socks_version', 'no_proxies_on', 'autoconfig_url', 'failover_timeout'],
+      pref
+    for (pref in config) {
+      if (allowedPrefs.indexOf(pref) > -1)
         setSystemPreference('network.proxy.' + pref, config[pref])
     }
   }
@@ -227,8 +227,8 @@
    * @param {function} errorCb The callback that gets called on error
    */
   function setBrowserProxy(host, port, successCb, errorCb) {
-    setSystemSetting('browser.proxy.host', host, function() {
-      setSystemSetting('browser.proxy.port', port, function() {
+    setSystemSetting('browser.proxy.host', host, function () {
+      setSystemSetting('browser.proxy.port', port, function () {
         setSystemSetting('browser.proxy.enabled', true, successCb, errorCb)
       }, errorCb)
     }, errorCb)
@@ -258,12 +258,12 @@
    * @returns {number} Luhn checksum digit
    */
   function calcIMEIChecksum(imei) {
-    if(imei === '' + imei) //split the digits if we passed the string
+    if (imei === '' + imei) //split the digits if we passed the string
       imei = imei.split('').map(Number)
     var revmap = [0, 2, 4, 6, 8, 1, 3, 5, 7, 9],
-        oddsum = imei[0] + imei[2] + imei[4] + imei[6] + imei[8] + imei[10] + imei[12],
-        evensum = revmap[imei[1]] + revmap[imei[3]] + revmap[imei[5]] + revmap[imei[7]] + revmap[imei[9]] + revmap[imei[11]] + revmap[imei[13]],
-        luhn = 10 - (oddsum + evensum) % 10
+      oddsum = imei[0] + imei[2] + imei[4] + imei[6] + imei[8] + imei[10] + imei[12],
+      evensum = revmap[imei[1]] + revmap[imei[3]] + revmap[imei[5]] + revmap[imei[7]] + revmap[imei[9]] + revmap[imei[11]] + revmap[imei[13]],
+      luhn = 10 - (oddsum + evensum) % 10
     return luhn > 9 ? 0 : luhn
   }
 
@@ -272,9 +272,9 @@
    * @param {string} tac Optional TAC 8-digit string
    * @returns {string} random valid IMEI number
    */
-  function generateRandomIMEI(tac='') {
+  function generateRandomIMEI(tac = '') {
     tac += ''
-    var imei = new Uint8Array(14 - tac.length).map(x=>(Math.random()*1000|0)%10)
+    var imei = new Uint8Array(14 - tac.length).map(x => (Math.random() * 1000 | 0) % 10)
     imei = tac.split('').map(Number).concat(Array.from(imei))
     return imei.join('') + calcIMEIChecksum(imei)
   }
@@ -289,23 +289,23 @@
    */
 
   function setNokiaIMEI(sim, imei, successCb, errorCb) {
-    if(Number(imei[14]) !== calcIMEIChecksum(imei)) {
+    if (Number(imei[14]) !== calcIMEIChecksum(imei)) {
       errorCb() //call the error callback if IMEI has invalid checksum
       return
     }
     var targetFile = sim === 2 ? 'nvm/context1/550' : 'nvm/num/550',
-        qImei = '\\x' + ('80a' + imei).match(/.{2}/g).map(function(c){return c[1] + c[0]}).join('\\x'),
-        blkPref = '/dev/block/bootdevice/by-name',
-        tunPart = blkPref + '/tunning',
-        efs1 = blkPref + '/modemst1',
-        efs2 = blkPref + '/modemst2',
-        cmdbatch = [
-          'cd $(mktemp -d)',
-          'busybox tar xf ' + tunPart,
-          'echo -ne "' + qImei + '" > ' + targetFile,
-          'busybox tar cf - . > ' + tunPart,
-          'dd if=/dev/zero of=' + efs1 + '; dd if=/dev/zero of=' + efs2
-        ].join(' && ')
+      qImei = '\\x' + ('80a' + imei).match(/.{2}/g).map(function (c) { return c[1] + c[0] }).join('\\x'),
+      blkPref = '/dev/block/bootdevice/by-name',
+      tunPart = blkPref + '/tunning',
+      efs1 = blkPref + '/modemst1',
+      efs2 = blkPref + '/modemst2',
+      cmdbatch = [
+        'cd $(mktemp -d)',
+        'busybox tar xf ' + tunPart,
+        'echo -ne "' + qImei + '" > ' + targetFile,
+        'busybox tar cf - . > ' + tunPart,
+        'dd if=/dev/zero of=' + efs1 + '; dd if=/dev/zero of=' + efs2
+      ].join(' && ')
     runCmd(cmdbatch, successCb, errorCb)
   }
 
@@ -339,9 +339,9 @@
    * @param {function} errorCb The callback that gets called on error
    */
   function installPkg(packageFile, successCb, errorCb) {
-    nav.mozApps.mgmt.import(packageFile).then(function(){
+    nav.mozApps.mgmt.import(packageFile).then(function () {
       successCb()
-    }).catch(function(e){
+    }).catch(function (e) {
       errorCb(e.name, e.message)
     })
   }
@@ -351,9 +351,9 @@
    * @param {function} errorCb The callback that gets called on error
    */
   function reboot(errorCb) {
-    runCmd('reboot', function(){}, errorCb)
+    runCmd('reboot', function () { }, errorCb)
   }
-  
+
   /**
   * Enable/disable call recording in the main callscreen (KaiOS 2.5.2+ only)
   * (toggled by Camera button on the devices that have it and Left arrow on all others)
@@ -362,10 +362,10 @@
   * @param {function} successCb The callback that gets called on success
   * @param {function} errorCb The callback that gets called on error
   */
-  function enableCallRecording(flag='on', format='wav', successCb, errorCb) {
-    setSystemSetting('callrecording.mode', flag, function() {
-      setSystemSetting('callrecording.file.format', format, function() {
-        setSystemSetting('callrecording.notification.enabled', false, function() {
+  function enableCallRecording(flag = 'on', format = 'wav', successCb, errorCb) {
+    setSystemSetting('callrecording.mode', flag, function () {
+      setSystemSetting('callrecording.file.format', format, function () {
+        setSystemSetting('callrecording.notification.enabled', false, function () {
           setSystemSetting('callrecording.vibration.enabled', false, successCb, errorCb)
         }, errorCb)
       }, errorCb)

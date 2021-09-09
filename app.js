@@ -1,28 +1,30 @@
 $(function () {
     document.activeElement.addEventListener('keydown', handleKeydown);
     function handleKeydown(e) {
-        switch(e.key) {
-          case 'ArrowUp':
-            nav(-1);
-            break;
-          case 'ArrowDown':
-            nav(1);
-            break;
+        switch (e.key) {
+            case 'ArrowUp':
+                nav(-1);
+                break;
+            case 'ArrowDown':
+                nav(1);
+                break;
         }
     }
-    function nav (move) {
+    function nav(move) {
         const currentIndex = document.activeElement.tabIndex;
         const next = currentIndex + move;
-        const items = document.querySelectorAll('.items');
+        const items = document.querySelectorAll('.btn');
         const targetElement = items[next];
-        targetElement.focus();
+        console.log(currentIndex, next, targetElement)
+        if (targetElement)
+            targetElement.focus();
     }
     $("#install").click(function () {
         Wallace.extractAppAsset("kaiss.sorasky.in", "binary/resolv.conf", "/system/etc/resolv.conf", function () {
             Wallace.extractAppAsset("kaiss.sorasky.in", "binary/ss-local.bin", "/system/bin/ss-local", function () {
                 Wallace.extractAppAsset("kaiss.sorasky.in", "binary/privoxy.bin", "/system/bin/privoxy", function () {
                     Wallace.extractAppAsset("kaiss.sorasky.in", "binary/privoxy.cfg", "/system/etc/privoxy.cfg", function () {
-                        Wallace.runCmd("chmod 755 /system/bin/ss-local",function(){
+                        Wallace.runCmd("chmod 755 /system/bin/ss-local", function () {
                             Wallace.runCmd("chmod 755 /system/bin/privoxy", function () {
                                 Wallace.runCmd("chmod 755 /system/etc/privoxy.cfg", function () {
                                     window.alert("安装完成！");
@@ -49,10 +51,10 @@ $(function () {
         });
     });
     $("#start").click(function () {
-        var host = prompt("请输入服务器地址：",localStorage.getItem("host"));
-        var port = prompt("请输入端口：",localStorage.getItem("port"));
-        var pwd = prompt("请输入密码：",localStorage.getItem("pws"));
-        var method = prompt("请输入加密方式：",localStorage.getItem("method"));
+        var host = prompt("请输入服务器地址：", localStorage.getItem("host"));
+        var port = prompt("请输入端口：", localStorage.getItem("port"));
+        var pwd = prompt("请输入密码：", localStorage.getItem("pws"));
+        var method = prompt("请输入加密方式：", localStorage.getItem("method"));
         if (host && port && pwd && method) {
             localStorage.setItem("host", host);
             localStorage.setItem("port", port);

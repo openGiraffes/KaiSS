@@ -1,0 +1,12 @@
+.alert {
+  padding: 6px;
+  margin-bottom: 6px;
+}
+
+.alert-info {
+  margin-top: 6px;
+}
+
+.btn {
+  padding: 6px;
+}
